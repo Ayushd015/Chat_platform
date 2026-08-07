@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Meta tags for responsiveness and character encoding -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Page title -->
+  <title>ChatMatch - Enhanced Interface</title>
+  
+  <!-- Google Fonts for styling -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  
+  <style>
+    /* CSS Variables for theme colors */
+    :root {
+      --bg-light: #cbd5e1;
+      --bg-dark: #1a202c;
+      --text-light: #4b5563;
+      --text-dark: #f9fafb;
+      --card-light: #ffffff;
+      --card-dark: #2d3748;
+      --button-light: #3b82f6;
+      --button-dark: #2b6cb0;
+      --highlight-color: #4c51bf;
+      --highlight-bg: rgba(76, 81, 191, 0.2);
+    }
+
+    /* Base styles for the body */
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1rem;
+      transition: background-color 0.3s;
+    }
+
+    /* Card container styling */
+    .card {
+      background: var(--card-light);
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      transition: background-color 0.3s;
+    }
+
+    /* Heading styles */
+    h1 {
+      font-size: 2rem;
+      color: #1e3a8a;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Paragraph styling */
+    p {
+      color: var(--text-light);
+      margin-bottom: 2rem;
+      transition: color 0.3s;
+    }
+
+    /* Button group container */
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    /* General button styles */
+    .main-button {
+      padding: 1rem;
+      border: none;
+      border-radius: 0.75rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+      width: 100%;
+    }
+
+    /* Match Randomly button styles */
+    .random-button {
+      background-color: var(--button-light);
+      color: #ffffff;
+    }
+
+    .random-button:hover {
+      background-color: var(--button-dark);
+    }
+
+    /* Filter Your Match button styles */
+    .filter-button {
+      background-color: #8b5cf6;
+      color: #ffffff;
+    }
+
+    .filter-button:hover {
+      background-color: #7c3aed;
+    }
+
+    /* Dark mode toggle button styling */
+    .toggle-dark-mode {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+      border-radius: 0.5rem;
+      background-color: #1e3a8a;
+      color: #ffffff;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .toggle-dark-mode:hover {
+      background-color: #2b6cb0;
+    }
+
+    .toggle-dark-mode:active {
+      transform: scale(1.1);
+    }
+
+    /* Checkbox group styling for filtering options */
+    .checkbox-group {
+      display: none;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1rem;
+      align-items: flex-start;
+      animation: fadeIn 0.5s;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border: 1px solid transparent;
+      border-radius: 0.5rem;
+      transition: background-color 0.3s, border-color 0.3s, transform 0.2s;
+      cursor: pointer;
+    }
+
+    /* Style for selected filter options */
+    .checkbox-item.selected {
+      background-color: var(--highlight-bg);
+      border-color: var(--highlight-color);
+      transform: scale(1.05);
+    }
+
+    /* Keyframes for fade-in animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* Larger screens styling */
+    @media (min-width: 768px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+      .card {
+        padding: 3rem;
+      }
+    }
+
+    /* Dark mode styles */
+    .dark-mode {
+      --bg-light: #1a202c;
+      --text-light: #f9fafb;
+      --card-light: #2d3748;
+      --button-light: #2b6cb0;
+    }
+  </style>
+</head>
+<body>
+  <!-- Dark mode toggle button -->
+  <button class="toggle-dark-mode" onclick="toggleDarkMode()">Dark Mode</button>
+
+  <!-- Main card -->
+  <div class="card" id="mainCard">
+    <!-- Title -->
+    <h1 id="title">Welcome to ChatMatch</h1>
+    <!-- Introduction text -->
+    <p>Choose your mode and get started!</p>
+    <!-- Button group -->
+    <div class="button-group">
+      <button class="main-button random-button" onclick="startRandomMatch()">Match Randomly</button>
+      <button class="main-button filter-button" onclick="toggleFilterOptions()">Filter Your Match</button>
+    </div>
+    <!-- Checkbox group for filter options -->
+    <div class="checkbox-group" id="filterOptions">
+      <p>Select your preferences:</p>
+      <label class="checkbox-item" onclick="toggleSelection(this)">
+        <input type="checkbox" name="filter" value="sports" /> Sports
+      </label>
+      <label class="checkbox-item" onclick="toggleSelection(this)">
+        <input type="checkbox" name="filter" value="games" /> Games
+      </label>
+      <label class="checkbox-item" onclick="toggleSelection(this)">
+        <input type="checkbox" name="filter" value="movies" /> Movies
+      </label>
+      <label class="checkbox-item" onclick="toggleSelection(this)">
+        <input type="checkbox" name="filter" value="food" /> Food
+      </label>
+      <button class="main-button filter-button" onclick="applyFilters()">Apply Filters</button>
+    </div>
+  </div>
+
+  <!-- Anime.js library for animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  
+  <script>
+    // Function to handle random match initiation
+    function startRandomMatch() {
+      alert("Finding your match...");
+    }
+
+    // Function to toggle filter options visibility
+    function toggleFilterOptions() {
+      const filterOptions = document.getElementById('filterOptions');
+      filterOptions.style.display = filterOptions.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    // Function to toggle dark mode
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+    }
+
+    // Function to toggle selection of a filter option
+    function toggleSelection(element) {
+      element.classList.toggle('selected');
+    }
+
+    // Function to apply selected filters
+    function applyFilters() {
+      const selectedFilters = Array.from(document.querySelectorAll('.checkbox-item.selected input')).map(checkbox => checkbox.value);
+      if (selectedFilters.length > 0) {
+        alert("Filters applied: " + selectedFilters.join(', '));
+      } else {
+        alert("Please select at least one filter option.");
+      }
+    }
+  </script>
+</body>
+</html>
